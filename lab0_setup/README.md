@@ -8,12 +8,13 @@
 
 ## Modify this section
 
-- How many hours did it take you to complete this lab?
+- How many hours did it take you to complete this lab? 0.5
 - Did you collaborate with any other students/TAs/Professors?
+  - Yes - Nicola Licata
 - Did you use any external resources? (Cite them below)
-  - tbd
-  - tbd
+  - https://stackoverflow.com/questions/47647035/cmake-prefix-path-doesnt-help-cmake-in-finding-qt5?answertab=active#tab-top 
 - (Optional) What was your favorite part of the lab?
+  - The part where I figured out how to let cmake find qt on my system
 - (Optional) How would you improve the lab?
 
 ## Logistics
