@@ -10,12 +10,14 @@
 
 ## Modify this section
 
-- How many hours did it take you to complete this lab?
+- How many hours did it take you to complete this lab? 
+	- 1
 - Did you collaborate with any other students/TAs/Professors?
+	- Nicola Licata
 - Did you use any external resources? (Cite them below)
-  - tbd
-  - tbd
+  - https://stackoverflow.com/questions/1560492/how-to-tell-whether-a-point-is-to-the-right-or-left-side-of-a-line 
 - (Optional) What was your favorite part of the lab?
+	- I like that there is no prescribed solution, so we can explore multiple possibilities.
 - (Optional) How would you improve the lab?
 
 ## Logistics
