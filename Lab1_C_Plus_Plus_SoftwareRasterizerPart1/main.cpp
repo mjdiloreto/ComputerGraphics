@@ -84,9 +84,17 @@ void triangle(Vec2 v0, Vec2 v1, Vec2 v2,TGA& image, ColorRGB c){
         drawLine(v2,v0,image,c);
     }
     else if (glFillMode == FILL) {
-				for (int x = 0; x < WINDOW_WIDTH; x++) {
-					  for (int y = 0; y < WINDOW_HEIGHT; y++) {
+    	  // bounding rectangle.
+    	  int bottom = std::max(std::max(v0.y, v1.y), v2.y);
+    	  int top = std::min(std::min(v0.y, v1.y), v2.y); 
+    	  int right = std::max(std::max(v0.x, v1.x), v2.x);
+    	  int left = std::min(std::min(v0.x, v1.x), v2.x); 
+
+				for (int x = left; x < right; x++) {
+					  for (int y = top; y < bottom; y++) {
 					  	  Vec2 pixel = Vec2(x, y);
+					  	  // Consider each pixel p, for every edge e and excluded vertex x,
+					  	  // color in p iff p and x are on the same side of e.
 								if(sameSide(v0, v1, v2, pixel) &&
 									 sameSide(v0, v2, v1, pixel) &&
 									 sameSide(v1, v2, v0, pixel)) {
@@ -121,7 +129,7 @@ int main(){
 
     // Data for our triangle
     Vec2 tri[3] = {Vec2(160,60),Vec2(150,10),Vec2(75,190)};
-    Vec2 tri2[3] = {Vec2(360,360),Vec2(200,200),Vec2(320,270)};
+    Vec2 tri2[3] = {Vec2(310,310),Vec2(200,200),Vec2(290,270)};
     Vec2 tri3[3] = {Vec2(100,200),Vec2(200,150),Vec2(150,230)};
 
     // Draw a triangle
