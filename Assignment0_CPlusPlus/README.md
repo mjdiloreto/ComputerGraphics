@@ -3,13 +3,15 @@
 *TODO*: Please edit the following information in your assignment
 
 * Name and partners name (At most 1 partner for this assignment): 
+  * I am partnered with Nicola Licata but completed the assignment without him because I was impatient.
 * How many hours did it take you to complete this assignment? 
+  * 4 h.
 * Did you collaborate or share ideas with any other students/TAs/Professors? 
+  * No
 * Did you use any external resources? 
-  * (tbd if any)
-  * (tbd if any)
-  * (tbd if any)
+  * StackOverflow for various basic C++ questions (initializing arrays, common file procedures).
 * (Optional) What was the most interesting part of the assignment? How would you improve this assignment?
+  * I appreciate that the assignment was focused on basics of C++ and familiarizing us with the language.
   
 ## Description
 
