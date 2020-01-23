@@ -70,15 +70,16 @@ void PPM::savePPM(std::string outputFileName){
     // Comment line
     outFile << "# CREATOR: ppm.cpp" << std::endl;
     // height width
-    outFile << m_width << std::endl;
-    outFile << m_height << std::endl;
+    outFile << m_width << " " <<  m_height << std::endl;
     
     // max pixel value. We always normalize to 255.
     outFile << "255" << std::endl;
-    for (int i = 0; i < m_width * m_height; i++) {
-        outFile << (int) m_PixelData[i*3] << std::endl;
-        outFile << (int) m_PixelData[i*3+1] << std::endl;
-        outFile << (int) m_PixelData[i*3+2] << std::endl;
+    for (int i = 0; i < m_height; i++) {
+        for (int j = 0; j < m_width; j++) {
+            int idx = (i * m_width + j) * 3;
+            outFile << (int) m_PixelData[idx] << " " << (int) m_PixelData[idx+1] << " " << (int) m_PixelData[idx+2] << " ";
+				}
+				outFile << std::endl;
     }
     outFile.close();
 }
