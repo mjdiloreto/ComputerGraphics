@@ -12,11 +12,13 @@
 ## Modify this section
 
 - How many hours did it take you to complete this lab?
-- Did you collaborate with any other students/TAs/Professors?
+  - 30 minutes (mostly reading through the project to familiarize with C++ concepts)
+- Did you collaborate with any other students/TAs/Professors? 
+  - No.
 - Did you use any external resources? (Cite them below)
-  - tbd
-  - tbd
+  - No.
 - (Optional) What was your favorite part of the lab?
+  - The instructions in the slide were very clear, and taught the concept well.
 - (Optional) How would you improve the lab?
 
 ## Logistics
