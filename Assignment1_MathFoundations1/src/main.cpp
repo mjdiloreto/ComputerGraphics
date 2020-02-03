@@ -187,18 +187,56 @@ bool vecTestScalarMultiply() {
     Vector4f v = Vector4f(1,2,3,4);
     Vector4f v1 = Vector4f(1,2,3,4);
     bool assert1 = v == v1;
-
+    
     v *= 1;
     bool assert2 = v == v1;
 
     v1 *= 2;
     bool assert3 = !(v == v1);
+    bool assert7 = !(v == v1);
 
     bool assert4 = (v *= 4) == (v1 *= 2);
 
     return assert1 && assert2 && assert3 && assert4;
 }
 
+bool vecTestScalarDivide() {
+    Vector4f v = Vector4f(12, 24, 60, 0);
+    Vector4f v1 = Vector4f(12, 24, 60, 0);
+    
+    bool assert1 = v == v1;
+    
+    v /= 1;
+    bool assert2 = v == v1;
+
+    v1 /= 2;
+    bool assert3 = !(v == v1);
+    bool assert4 = v1 == Vector4f(6,12,30,0);
+
+    v /= 5;
+    bool assert5 = v == Vector4f(2.4,4.8,12,0);
+
+    return assert1 && assert2 && assert3 && assert4 && assert5;
+}
+
+bool vecTestPlusMinus() {
+    Vector4f v = Vector4f(0,0,0,0);
+    Vector4f v1 = Vector4f(1,0,1,0);
+    Vector4f v2 = Vector4f(4,4,7,67);
+    Vector4f v3 = Vector4f(2,0,2,0);
+
+    bool assert1 = v == (v + v);
+    bool assert2 = v1 == (v1 + v);
+
+    bool assert3 = (v1 + v1) == v3;
+    bool assert4 = (v3 - v1) == v1;
+    bool assert5 = ((v3 - v1) - v1) == v;
+
+    bool assert6 = (v1 + v2 - v1) == v2;
+    bool assert7 = (v3 - v2) == Vector4f(-2,-4,-5,-67);
+
+    return assert1 && assert2 && assert3 && assert4 && assert5 && assert6 && assert7;
+}
 
 int main(){
     // Keep track of the tests passed
@@ -212,8 +250,10 @@ int main(){
     std::cout << "Passed 4: " << unitTest4() << " \n";
     std::cout << "Passed 5: " << unitTest5() << " \n";
     
-    std::cout << "Passed vec 1: " << vecTestConstructor() << " \n";
-    std::cout << "Passed vec 1: " << vecTestScalarMultiply() << " \n";
+    std::cout << "Passed vec: " << vecTestConstructor() << " \n";
+    std::cout << "Passed vec: " << vecTestScalarMultiply() << " \n";
+    std::cout << "Passed vec: " << vecTestScalarDivide() << " \n";
+    std::cout << "Passed vec: " << vecTestPlusMinus() << " \n";
 
     return 0;
 }

@@ -2,6 +2,11 @@
 #define Vector4f_H
 
 #include <cmath>
+#include <iostream>
+
+// For purposes of equality, two floating point values within Vector4f are equivalent
+// if their difference is less than this value.
+#define Vector4f_EPSILON 0.000001f
 
 // Vector4f performs vector operations with 4-dimensions
 // The purpose of this class is primarily for 3D graphics
@@ -61,7 +66,18 @@ struct Vector4f{
 
     // Equality
     bool operator ==(const Vector4f& v2) {
-        return x == v2[0] && y == v2[1] && z == v2[2] && w == v2[3];
+        return fcomp(x, v2[0]) && fcomp(y, v2[1]) && fcomp(z, v2[2]) && fcomp(w, v2[3]);
+    }
+
+
+private:
+    // compare 2 floating point numbers for equality.
+    bool fcomp(float f1, float f2, float epsilon) {
+        return fabs(f1 - f2) < epsilon;
+    }
+
+    bool fcomp(float f1, float f2) {
+        return fcomp(f1, f2, Vector4f_EPSILON);
     }
 };
 
@@ -130,5 +146,9 @@ inline Vector4f CrossProduct(const Vector4f& a, const Vector4f& b){
     return Vector4f(a[1]*b[2] - a[2]*b[1], a[2]*b[0] - a[0]*b[2], a[0]*b[1] - a[1]*b[0], 1);
 }
 
+// For Debugging!
+std::ostream& operator<<(std::ostream& os, const Vector4f& obj) {
+    return os << "Vector4h(" << obj.x << "," << obj.y << "," << obj.z << "," << obj.w <<")";
+}
 
 #endif
