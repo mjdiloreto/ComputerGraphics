@@ -80,6 +80,10 @@ bool unitTest2(){
     Vector4f d(0.0f ,0.0f,  0.0f,   1.0f);
     Matrix4f myIdentity(a,b,c,d);
 
+    Matrix4f identity2(a,a,a,a);
+    identity2.identity();
+    bool assert1 = myIdentity == identity2;
+
     if(
         glmIdentityMatrix[0][0]==myIdentity[0][0] &&
         glmIdentityMatrix[0][1]==myIdentity[0][1] &&
@@ -97,7 +101,7 @@ bool unitTest2(){
         glmIdentityMatrix[3][1]==myIdentity[3][1] &&
         glmIdentityMatrix[3][2]==myIdentity[3][2] &&
         glmIdentityMatrix[3][3]==myIdentity[3][3]){
-            return true;
+            return assert1;
     }
     
     return false;    
@@ -180,7 +184,11 @@ bool unitTest5(){
 
 bool vecTestConstructor() {
     Vector4f v = Vector4f(1,2,3,4);
-    return v[0] == 1 && v[1] == 2 && v[2] == 3 && v[3] == 4;
+    bool assert1 = v[0] == 1 && v[1] == 2 && v[2] == 3 && v[3] == 4;
+
+    bool assert2 = Vector4f(0,0.0199987,0.9998,0) == Vector4f(0,0.0199987,0.9998,0);
+
+    return assert1 && assert2;
 }
 
 bool vecTestScalarMultiply() {
@@ -238,6 +246,32 @@ bool vecTestPlusMinus() {
     return assert1 && assert2 && assert3 && assert4 && assert5 && assert6 && assert7;
 }
 
+bool vecTestDotProduct() {
+    Vector4f v = Vector4f(0,0,0,0);
+    Vector4f v1 = Vector4f(1,1,1,1);
+    Vector4f v2 = Vector4f(1,2,3,4);
+
+    bool assert1 = Dot(v, v) == 0;
+    bool assert2 = Dot(v1, v) == 0;
+    bool assert3 = Dot(v, v2) == 0;
+    bool assert4 = Dot(v1, v1) == 4;
+    bool assert5 = Dot(v2, v2) == (1+4+9+16);
+
+    return assert1 && assert2 && assert3 && assert4 && assert5;
+}
+
+bool matTestRotation() {
+    Matrix4f m1;
+    m1.identity();
+
+    Matrix4f m2 = Matrix4f(Vector4f(1,0,0,0),
+                           Vector4f(0,0.9998,-0.0199987,0),
+                           Vector4f(0,0.0199987,0.9998,0),
+                           Vector4f(0,0,0,1));
+
+    return m1.MakeRotationX(0.02) == m2;
+}
+
 int main(){
     // Keep track of the tests passed
     unsigned int testsPassed = 0;
@@ -254,6 +288,9 @@ int main(){
     std::cout << "Passed vec: " << vecTestScalarMultiply() << " \n";
     std::cout << "Passed vec: " << vecTestScalarDivide() << " \n";
     std::cout << "Passed vec: " << vecTestPlusMinus() << " \n";
+    std::cout << "Passed vec: " << vecTestDotProduct() << " \n";
+
+    std::cout << "Passed mat: " << matTestRotation() << " \n";
 
     return 0;
 }

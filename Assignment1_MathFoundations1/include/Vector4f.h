@@ -6,7 +6,7 @@
 
 // For purposes of equality, two floating point values within Vector4f are equivalent
 // if their difference is less than this value.
-#define Vector4f_EPSILON 0.000001f
+#define Vector4f_EPSILON 0.00001f
 
 // Vector4f performs vector operations with 4-dimensions
 // The purpose of this class is primarily for 3D graphics
@@ -148,7 +148,7 @@ inline Vector4f CrossProduct(const Vector4f& a, const Vector4f& b){
 
 // For Debugging!
 std::ostream& operator<<(std::ostream& os, const Vector4f& obj) {
-    return os << "Vector4h(" << obj.x << "," << obj.y << "," << obj.z << "," << obj.w <<")";
+    return os << "Vector4f(" << obj.x << "," << obj.y << "," << obj.z << "," << obj.w <<")";
 }
 
 #endif
