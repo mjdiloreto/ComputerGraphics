@@ -15,17 +15,17 @@ public:
     float n[4][4];  // Store each value of the matrix
     Matrix4f() = default;
 
-    // Row major order!
+    // Column major order!
     // Matrix constructor with 9 scalar values.
     Matrix4f( float n00, float n01, float n02, float n03,
               float n10, float n11, float n12, float n13,
               float n20, float n21, float n22, float n23,
               float n30, float n31, float n32, float n33){
 
-        n[0][0] = n00; n[0][1] = n01; n[0][2] = n02; n[0][3] = n03;
-        n[1][0] = n10; n[1][1] = n11; n[1][2] = n12; n[1][3] = n13;
-        n[2][0] = n20; n[2][1] = n21; n[2][2] = n22; n[2][3] = n23;
-        n[3][0] = n30; n[3][1] = n31; n[3][2] = n32; n[3][3] = n33;
+        n[0][0] = n00; n[1][0] = n01; n[2][0] = n02; n[3][0] = n03;
+        n[0][1] = n10; n[1][1] = n11; n[2][1] = n12; n[3][1] = n13;
+        n[0][2] = n20; n[1][2] = n21; n[2][2] = n22; n[3][2] = n23;
+        n[0][3] = n30; n[1][3] = n31; n[2][3] = n32; n[3][3] = n33;
     }
 
     // Matrix constructor from four vectors.
@@ -35,10 +35,10 @@ public:
     }
 
     void init(const Vector4f& a, const Vector4f& b, const Vector4f& c, const Vector4f& d){
-      n[0][0] = a.x; n[1][0] = b.x; n[2][0] = c.x; n[3][0] = d.x;
-      n[0][1] = a.y; n[1][1] = b.y; n[2][1] = c.y; n[3][1] = d.y;
-      n[0][2] = a.z; n[1][2] = b.z; n[2][2] = c.z; n[3][2] = d.z;
-      n[0][3] = a.w; n[1][3] = b.w; n[2][3] = c.w; n[3][3] = d.w;
+      n[0][0]= a.x; n[0][1]= b.x; n[0][2]= c.x; n[0][3] = d.x;
+      n[1][0]= a.y; n[1][1]= b.y; n[1][2]= c.y; n[1][3] = d.y;
+      n[2][0]= a.z; n[2][1]= b.z; n[2][2]= c.z; n[2][3] = d.z;
+      n[3][0]= a.w; n[3][1]= b.w; n[3][2]= c.w; n[3][3] = d.w;
     }
 
     // Makes the matrix an identity matrix
@@ -58,7 +58,7 @@ public:
     // Index operator with two dimensions
     // Example: M(1,1) returns row 1 and column 1 of matrix M.
     const float& operator ()(int i, int j) const{
-      return (n[i][j]);
+      return (n[j][i]);
     }
 
     // Return a single row vector from the matrix 
@@ -122,21 +122,10 @@ public:
                (*this)[2] == other[2] &&
                (*this)[3] == other[3];
     }
-
-private:
-    // compare 2 floating point numbers for equality.
-    bool fcomp(float f1, float f2, float epsilon) {
-        return fabs(f1 - f2) < epsilon;
-    }
-
-    bool fcomp(float f1, float f2) {
-        return fcomp(f1, f2, Vector4f_EPSILON);
-    }
 };
 
 // Matrix Multiplication
 Matrix4f operator *(const Matrix4f& A, const Matrix4f& B){
-  // TODO:
   Matrix4f mat4;
 
   return mat4;
@@ -145,7 +134,6 @@ Matrix4f operator *(const Matrix4f& A, const Matrix4f& B){
 // Matrix multiply by a vector
 
 Vector4f operator *(const Matrix4f& M, const Vector4f& v){
-  // TODO:
   Vector4f vec;
 
   return vec;
@@ -154,7 +142,10 @@ Vector4f operator *(const Matrix4f& M, const Vector4f& v){
 
 // For Debugging!
 std::ostream& operator<<(std::ostream& os, const Matrix4f& obj) {
-    return os << "Matrix4f(" << obj[0] << "," << obj[1] << "," << obj[2] << "," << obj[3] <<")";
+    return os << "Matrix4f(" << obj.n[0][0] << "," << obj.n[0][1] << "," << obj.n[0][2] << "," << obj.n[0][3] << "," << std::endl 
+                             << obj.n[1][0] << "," << obj.n[1][1] << "," << obj.n[1][2] << "," << obj.n[1][3] << "," << std::endl 
+                             << obj.n[2][0] << "," << obj.n[2][1] << "," << obj.n[2][2] << "," << obj.n[2][3] << "," << std::endl 
+                             << obj.n[3][0] << "," << obj.n[3][1] << "," << obj.n[3][2] << "," << obj.n[3][3] << "," << std::endl << ")";
 }
 
 #endif

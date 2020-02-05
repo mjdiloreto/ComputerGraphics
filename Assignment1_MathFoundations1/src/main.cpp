@@ -9,6 +9,32 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/string_cast.hpp>
+
+#include "util.h"
+
+// Compare my Matrix type with the glm implementation.
+bool Matrix4fEqualsMat4(Matrix4f& myMatrix, glm::mat4& glmMatrix) {
+    return (
+        fcomp(glmMatrix[0][0], myMatrix[0][0]) &&
+        fcomp(glmMatrix[0][1], myMatrix[0][1]) &&
+        fcomp(glmMatrix[0][2], myMatrix[0][2]) &&
+        fcomp(glmMatrix[0][3], myMatrix[0][3]) &&
+        fcomp(glmMatrix[1][0], myMatrix[1][0]) &&
+        fcomp(glmMatrix[1][1], myMatrix[1][1]) &&
+        fcomp(glmMatrix[1][2], myMatrix[1][2]) &&
+        fcomp(glmMatrix[1][3], myMatrix[1][3]) &&
+        fcomp(glmMatrix[2][0], myMatrix[2][0]) &&
+        fcomp(glmMatrix[2][1], myMatrix[2][1]) &&
+        fcomp(glmMatrix[2][2], myMatrix[2][2]) &&
+        fcomp(glmMatrix[2][3], myMatrix[2][3]) &&
+        fcomp(glmMatrix[3][0], myMatrix[3][0]) &&
+        fcomp(glmMatrix[3][1], myMatrix[3][1]) &&
+        fcomp(glmMatrix[3][2], myMatrix[3][2]) &&
+        fcomp(glmMatrix[3][3], myMatrix[3][3])
+    );
+}
+
 
 // Sample unit test comparing against GLM.
 bool unitTest0(){
@@ -17,28 +43,7 @@ bool unitTest0(){
                          0,1.0f,0,0,
                          0,0,1.0f,0,
                          0,0,0,1.0f);
-
-    if(
-        glmIdentityMatrix[0][0]==myIdentity[0][0] &&
-        glmIdentityMatrix[0][1]==myIdentity[0][1] &&
-        glmIdentityMatrix[0][2]==myIdentity[0][2] &&
-        glmIdentityMatrix[0][3]==myIdentity[0][3] &&
-        glmIdentityMatrix[1][0]==myIdentity[1][0] &&
-        glmIdentityMatrix[1][1]==myIdentity[1][1] &&
-        glmIdentityMatrix[1][2]==myIdentity[1][2] &&
-        glmIdentityMatrix[1][3]==myIdentity[1][3] &&
-        glmIdentityMatrix[2][0]==myIdentity[2][0] &&
-        glmIdentityMatrix[2][1]==myIdentity[2][1] &&
-        glmIdentityMatrix[2][2]==myIdentity[2][2] &&
-        glmIdentityMatrix[2][3]==myIdentity[2][3] &&
-        glmIdentityMatrix[3][0]==myIdentity[3][0] &&
-        glmIdentityMatrix[3][1]==myIdentity[3][1] &&
-        glmIdentityMatrix[3][2]==myIdentity[3][2] &&
-        glmIdentityMatrix[3][3]==myIdentity[3][3]){
-            return true;
-    }
-    
-    return false;    
+    return Matrix4fEqualsMat4(myIdentity, glmIdentityMatrix);
 }
 
 bool unitTest1(){
@@ -47,28 +52,7 @@ bool unitTest1(){
                          0,1.0f,0,0,
                          0,0,1.0f,0,
                          0,0,0,1.0f);
-
-    if(
-        glmIdentityMatrix[0][0]==myIdentity(0,0) &&
-        glmIdentityMatrix[0][1]==myIdentity(0,1) &&
-        glmIdentityMatrix[0][2]==myIdentity(0,2) &&
-        glmIdentityMatrix[0][3]==myIdentity(0,3) &&
-        glmIdentityMatrix[1][0]==myIdentity(1,0) &&
-        glmIdentityMatrix[1][1]==myIdentity(1,1) &&
-        glmIdentityMatrix[1][2]==myIdentity(1,2) &&
-        glmIdentityMatrix[1][3]==myIdentity(1,3) &&
-        glmIdentityMatrix[2][0]==myIdentity(2,0) &&
-        glmIdentityMatrix[2][1]==myIdentity(2,1) &&
-        glmIdentityMatrix[2][2]==myIdentity(2,2) &&
-        glmIdentityMatrix[2][3]==myIdentity(2,3) &&
-        glmIdentityMatrix[3][0]==myIdentity(3,0) &&
-        glmIdentityMatrix[3][1]==myIdentity(3,1) &&
-        glmIdentityMatrix[3][2]==myIdentity(3,2) &&
-        glmIdentityMatrix[3][3]==myIdentity(3,3)){
-            return true;
-    }
-    
-    return false;    
+    return Matrix4fEqualsMat4(myIdentity, glmIdentityMatrix);
 }
 
 // Sample unit test comparing against GLM.
@@ -84,61 +68,21 @@ bool unitTest2(){
     identity2.identity();
     bool assert1 = myIdentity == identity2;
 
-    if(
-        glmIdentityMatrix[0][0]==myIdentity[0][0] &&
-        glmIdentityMatrix[0][1]==myIdentity[0][1] &&
-        glmIdentityMatrix[0][2]==myIdentity[0][2] &&
-        glmIdentityMatrix[0][3]==myIdentity[0][3] &&
-        glmIdentityMatrix[1][0]==myIdentity[1][0] &&
-        glmIdentityMatrix[1][1]==myIdentity[1][1] &&
-        glmIdentityMatrix[1][2]==myIdentity[1][2] &&
-        glmIdentityMatrix[1][3]==myIdentity[1][3] &&
-        glmIdentityMatrix[2][0]==myIdentity[2][0] &&
-        glmIdentityMatrix[2][1]==myIdentity[2][1] &&
-        glmIdentityMatrix[2][2]==myIdentity[2][2] &&
-        glmIdentityMatrix[2][3]==myIdentity[2][3] &&
-        glmIdentityMatrix[3][0]==myIdentity[3][0] &&
-        glmIdentityMatrix[3][1]==myIdentity[3][1] &&
-        glmIdentityMatrix[3][2]==myIdentity[3][2] &&
-        glmIdentityMatrix[3][3]==myIdentity[3][3]){
-            return assert1;
-    }
-    
-    return false;    
+    return assert1 && Matrix4fEqualsMat4(identity2, glmIdentityMatrix);
 }
 
 // Sample unit test comparing against GLM.
-// TODO: Test against glm::scale
 bool unitTest3(){
-    glm::mat4 glmScale = glm::mat4(2.0f);
+    glm::vec3 scales = glm::vec3(2.0f, 2.0f, 2.0f);
+    glm::mat4 glmScale = glm::scale(scales);
     Vector4f a(1.0f,0,0,0);
     Vector4f b(0.0f,1.0f,0,0);
     Vector4f c(0,0,1.0f,0);
     Vector4f d(0,0,0,1.0f);
-    Matrix4f myScaled(a,b,c,d);
-    myScaled.MakeScale(2.0f,2.0f,2.0f);
+    Matrix4f myIdentity(a,b,c,d);
+    Matrix4f myScaled = myScaled.MakeScale(2.0f,2.0f,2.0f);
 
-    if(
-        glmScale[0][0]==myScaled[0][0] &&
-        glmScale[0][1]==myScaled[0][1] &&
-        glmScale[0][2]==myScaled[0][2] &&
-        glmScale[0][3]==myScaled[0][3] &&
-        glmScale[1][0]==myScaled[1][0] &&
-        glmScale[1][1]==myScaled[1][1] &&
-        glmScale[1][2]==myScaled[1][2] &&
-        glmScale[1][3]==myScaled[1][3] &&
-        glmScale[2][0]==myScaled[2][0] &&
-        glmScale[2][1]==myScaled[2][1] &&
-        glmScale[2][2]==myScaled[2][2] &&
-        glmScale[2][3]==myScaled[2][3] &&
-        glmScale[3][0]==myScaled[3][0] &&
-        glmScale[3][1]==myScaled[3][1] &&
-        glmScale[3][2]==myScaled[3][2] &&
-        glmScale[3][3]==myScaled[3][3]){
-            return true;
-    }
-    
-    return false;    
+    return Matrix4fEqualsMat4(myScaled, glmScale);
 }
 
 // Sample unit test comparing against GLM.
@@ -148,20 +92,15 @@ bool unitTest4(){
     glmTest[1][3] = 72.0f;
     glmTest[2][3] = 2.1f;
 
-    Matrix4f myMatrix(0,0,0,0,
-                      0,0,0,0,
-                      0,0,0,0,
-                      0,0,0,0);
+    Matrix4f myMatrix(1,0,0,0,
+                      0,1,0,0,
+                      0,0,1,0,
+                      0,0,0,1);
 
     myMatrix[1][3] = 72.0f;
     myMatrix[2][3] = 2.1f;
-
-    if( glmTest[1][3]==myMatrix[1][3] &&
-        glmTest[2][3]==myMatrix[2][3] ){
-            return true;
-    }
     
-    return false;    
+    return Matrix4fEqualsMat4(myMatrix, glmTest);
 }
 
 // Sample unit test testing your library
@@ -178,9 +117,8 @@ bool unitTest5(){
 
 
 /*
-    Vector Unit tests
+    VECTOR TESTS
 */
-
 
 bool vecTestConstructor() {
     Vector4f v = Vector4f(1,2,3,4);
@@ -260,16 +198,51 @@ bool vecTestDotProduct() {
     return assert1 && assert2 && assert3 && assert4 && assert5;
 }
 
+
+/*
+    MATRIX TESTS
+*/
+
 bool matTestRotation() {
     Matrix4f m1;
     m1.identity();
 
-    Matrix4f m2 = Matrix4f(Vector4f(1,0,0,0),
-                           Vector4f(0,0.9998,-0.0199987,0),
-                           Vector4f(0,0.0199987,0.9998,0),
-                           Vector4f(0,0,0,1));
+    // radians
+    float xAngle = 0.02f;
+    float yAngle = 1;
+    float zAngle = 17;
 
-    return m1.MakeRotationX(0.02) == m2;
+    Matrix4f mRotX = Matrix4f(1,0,0,0,
+                           0,0.9998,-0.0199987,0,
+                           0,0.0199987,0.9998,0,
+                           0,0,0,1);
+
+    Matrix4f mRotY = Matrix4f(0.540302,0,0.841471,0,
+                              0,1,0,0,
+                              -0.841471,0,0.540302,0,
+                              0,0,0,1);
+
+    Matrix4f mRotZ = Matrix4f(-0.275163,0.961397,0,0,
+                              -0.961397,-0.275163,0,0,
+                              0,0,1,0,
+                              0,0,0,1);
+
+    glm::mat4 glmRotX = rotate(xAngle, glm::vec3(1.0, 0.0, 0.0));
+    glm::mat4 glmRotY = rotate(yAngle, glm::vec3(0.0, 1.0, 0.0));
+    glm::mat4 glmRotZ = rotate(zAngle, glm::vec3(0.0, 0.0, 1.0));
+
+    Matrix4f actualRotX = m1.MakeRotationX(xAngle);
+    Matrix4f actualRotY = m1.MakeRotationY(yAngle);
+    Matrix4f actualRotZ = m1.MakeRotationZ(zAngle);
+      
+
+
+    std::cout << mRotX << std::endl;
+    std::cout << actualRotX << std::endl;
+    std::cout << glm::to_string(glmRotX) << std::endl;
+    return actualRotX == mRotX;// && Matrix4fEqualsMat4(actualRotX, glmRotX) &&
+           //actualRotY == mRotY && Matrix4fEqualsMat4(actualRotY, glmRotY) &&
+           //actualRotZ == mRotZ && Matrix4fEqualsMat4(actualRotZ, glmRotZ);
 }
 
 int main(){
