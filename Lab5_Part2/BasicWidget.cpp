@@ -30,6 +30,9 @@ BasicWidget::~BasicWidget()
 #endif
 }
 
+// global to be used for key bindings
+int num_triangles = 2;
+
 //////////////////////////////////////////////////////////////////////
 // Privates
 QString BasicWidget::vertexShaderString() const
@@ -141,13 +144,14 @@ unsigned int BasicWidget::compileShader(unsigned int type, const QString& shader
 // Protected
 void BasicWidget::keyReleaseEvent(QKeyEvent* keyEvent)
 {
-  // TODO
   // Handle key events here.
   if (keyEvent->key() == Qt::Key_Left) {
     qDebug() << "Left Arrow Pressed";
+    num_triangles = 1;
     update();  // We call update after we handle a key press to trigger a redraw when we are ready
   } else if (keyEvent->key() == Qt::Key_Right) {
     qDebug() << "Right Arrow Pressed";
+    num_triangles = 2;
     update();  // We call update after we handle a key press to trigger a redraw when we are ready
   } else {
     qDebug() << "You Pressed an unsupported Key!";
@@ -171,7 +175,6 @@ void BasicWidget::initializeGL()
   // Set up our shaders.
   createShader();
 
-  // TODO:  Add vertex and index data to draw two triangles
   // Define our verts
   static const GLfloat verts[12] =
   {
@@ -193,7 +196,6 @@ void BasicWidget::initializeGL()
   {
       0, 1, 2, 2, 1, 3
   };
-  // ENDTODO
   // Set up our buffers and our vao
 #if USE_QT_OPENGL
   // Temporary bind of our shader.
@@ -205,10 +207,15 @@ void BasicWidget::initializeGL()
   vbo_.bind();
   vbo_.allocate(verts, 12 * sizeof(GL_FLOAT));
 
-  // TODO:  Generate our color buffer
-  // ENDTODO
-  // TODO:  Generate our index buffer
-  // ENDTODO
+  cbo_.setUsagePattern(QOpenGLBuffer::StaticDraw);
+  cbo_.create();
+  cbo_.bind();
+  cbo_.allocate(colors, 16 * sizeof(GL_FLOAT));
+ 
+  ibo_.setUsagePattern(QOpenGLBuffer::StaticDraw);
+  ibo_.create();
+  ibo_.bind();
+  ibo_.allocate(idx, 6 * sizeof(GL_UNSIGNED_INT));
 
   // Create a VAO to keep track of things for us.
   vao_.create();
@@ -259,9 +266,7 @@ void BasicWidget::paintGL()
 #if USE_QT_OPENGL
   shaderProgram_.bind();
   vao_.bind();
-  // TODO: Change number of indices drawn
-  glDrawElements(GL_TRIANGLES, ??, GL_UNSIGNED_INT, 0);
-  // ENDTODO
+  glDrawElements(GL_TRIANGLES, num_triangles * 3, GL_UNSIGNED_INT, 0);
   vao_.release();
   shaderProgram_.release();
 #else

@@ -10,11 +10,13 @@
 
 ## Modify this section
 
-- How many hours did it take you to complete this lab?
+- How many hours did it take you to complete this lab? 
+  - 1 hour
 - Did you collaborate with any other students/TAs/Professors?
+  - Yes, Nicola Licate
 - Did you use any external resources? (Cite them below)
-  - tbd
-  - tbd
+  - docs.gl
+  - doc.qt.io
 - (Optional) What was your favorite part of the lab?
 - (Optional) How would you improve the lab?
 
