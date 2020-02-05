@@ -3,7 +3,7 @@
 
 // For purposes of equality, two floating point values within Vector4f are equivalent
 // if their difference is less than this value.
-#define Vector4f_EPSILON 0.0001f
+#define Vector4f_EPSILON 0.00001f
 
 // compare 2 floating point numbers for equality.
 bool fcomp(float f1, float f2, float epsilon) {

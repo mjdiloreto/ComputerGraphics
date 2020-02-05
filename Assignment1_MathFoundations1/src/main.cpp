@@ -212,20 +212,9 @@ bool matTestRotation() {
     float yAngle = 1;
     float zAngle = 17;
 
-    Matrix4f mRotX = Matrix4f(1,0,0,0,
-                           0,0.9998,-0.0199987,0,
-                           0,0.0199987,0.9998,0,
-                           0,0,0,1);
-
-    Matrix4f mRotY = Matrix4f(0.540302,0,0.841471,0,
-                              0,1,0,0,
-                              -0.841471,0,0.540302,0,
-                              0,0,0,1);
-
-    Matrix4f mRotZ = Matrix4f(-0.275163,0.961397,0,0,
-                              -0.961397,-0.275163,0,0,
-                              0,0,1,0,
-                              0,0,0,1);
+    Matrix4f mRotX = Matrix4f(1,0,0,0, 0,0.9998,-0.0199987,0, 0,0.0199987,0.9998,0, 0,0,0,1);
+    Matrix4f mRotY = Matrix4f(0.540302,0,0.841471,0, 0,1,0,0, -0.841471,0,0.540302,0, 0,0,0,1);
+    Matrix4f mRotZ = Matrix4f(-0.275163,0.961397,0,0, -0.961397,-0.275163,0,0, 0,0,1,0, 0,0,0,1);
 
     glm::mat4 glmRotX = rotate(xAngle, glm::vec3(1.0, 0.0, 0.0));
     glm::mat4 glmRotY = rotate(yAngle, glm::vec3(0.0, 1.0, 0.0));
@@ -234,15 +223,79 @@ bool matTestRotation() {
     Matrix4f actualRotX = m1.MakeRotationX(xAngle);
     Matrix4f actualRotY = m1.MakeRotationY(yAngle);
     Matrix4f actualRotZ = m1.MakeRotationZ(zAngle);
-      
 
+    return actualRotX == mRotX && Matrix4fEqualsMat4(actualRotX, glmRotX) &&
+           actualRotY == mRotY && Matrix4fEqualsMat4(actualRotY, glmRotY) &&
+           actualRotZ == mRotZ && Matrix4fEqualsMat4(actualRotZ, glmRotZ);
+}
 
-    std::cout << mRotX << std::endl;
-    std::cout << actualRotX << std::endl;
-    std::cout << glm::to_string(glmRotX) << std::endl;
-    return actualRotX == mRotX;// && Matrix4fEqualsMat4(actualRotX, glmRotX) &&
-           //actualRotY == mRotY && Matrix4fEqualsMat4(actualRotY, glmRotY) &&
-           //actualRotZ == mRotZ && Matrix4fEqualsMat4(actualRotZ, glmRotZ);
+bool matTestMatrixMultiply() {
+    Matrix4f myId; 
+    myId.identity();
+
+    Matrix4f zeros = Matrix4f();
+
+    Matrix4f mRotY = Matrix4f(0.540302,0,0.841471,0, 0,1,0,0, -0.841471,0,0.540302,0, 0,0,0,1);
+    Matrix4f mScale = myId.MakeScale(2.0f,2.0f,2.0f);
+
+    glm::mat4 glmRotY = rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 glmScale = glm::scale(glm::vec3(2.0f, 2.0f, 2.0f));
+    glm::mat4 glmRotYScale = glmRotY * glmScale;
+    
+    bool assert1 = (myId * myId) == myId;
+    bool assert2 = (myId * mRotY) == mRotY;
+    bool assert3 = (myId * zeros) == zeros;
+    bool assert4 = (zeros * zeros) == zeros;
+
+    Matrix4f expectedRotYScale = Matrix4f(1.0806,0,1.68294,0, 0,2,0,0, -1.68294,0,1.0806,0, 0,0,0,1);
+
+    bool assert5 = expectedRotYScale == (mRotY * mScale);
+    bool assert6 = Matrix4fEqualsMat4(expectedRotYScale, glmRotYScale);
+
+    return assert1 && assert2 && assert3 && assert4 && assert5 && assert6;
+}
+
+bool matTestMatrixProjection() {
+    // My Library
+    Matrix4f myId; 
+    myId.identity();
+
+    Matrix4f zeros = Matrix4f();
+
+    Matrix4f mRotY = Matrix4f(0.540302,0,0.841471,0, 0,1,0,0, -0.841471,0,0.540302,0, 0,0,0,1);
+    Matrix4f mScale = myId.MakeScale(2.0f,2.0f,2.0f);
+
+    Vector4f zero = Vector4f(0,0,0,0);
+    Vector4f one = Vector4f(1,1,1,1);
+    Vector4f interesting  = Vector4f(2,0,1,1);
+
+    bool assert1 = (zeros * zero) == zero;
+    bool assert2 = (myId * zero) == zero;
+    bool assert3 = (myId * one) == one;
+    bool assert4 = (zeros * one) == zero;
+    bool assert5 = (mScale * one) == Vector4f(2,2,2,1);
+    bool assert6 = (mRotY * interesting) == Vector4f(1.92208,0,-1.14264,1);
+
+    // associative
+    bool assert7 = ((mRotY * mScale) * interesting) == (mRotY * (mScale * interesting));
+
+    // glm library
+    glm::mat4 glmRotY = rotate(1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 glmScale = glm::scale(glm::vec3(2.0f, 2.0f, 2.0f));
+    glm::mat4 glmRotYScale = glmRotY * glmScale;
+
+    glm::vec4 glmZero = glm::vec4(0.0f,0.0f,0.0f,0.0f);
+    glm::vec4 glmOne = glm::vec4(1.0f,1.0f,1.0f,1.0f);
+    glm::vec4 glmInteresting  = glm::vec4(2.0f,0.0f,1.0f,1.0f);
+
+    bool assert8 = (glmScale * glmOne) == glm::vec4(2.0f,2.0f,2.0f,1.0f);
+    glm::vec4 interestingRotation = glmRotY * glmInteresting;
+    bool assert9 = fcomp(interestingRotation[0], 1.92208f) &&
+                   fcomp(interestingRotation[1], 0.0f) &&
+                   fcomp(interestingRotation[2], -1.14264f) &&
+                   fcomp(interestingRotation[3], 1.0f);
+
+    return assert1 && assert2 && assert3 && assert4 && assert5 && assert6 && assert7 && assert8 && assert9; 
 }
 
 int main(){
@@ -264,6 +317,8 @@ int main(){
     std::cout << "Passed vec: " << vecTestDotProduct() << " \n";
 
     std::cout << "Passed mat: " << matTestRotation() << " \n";
+    std::cout << "Passed mat: " << matTestMatrixMultiply() << " \n";
+    std::cout << "Passed mat: " << matTestMatrixProjection() << " \n";
 
     return 0;
 }
