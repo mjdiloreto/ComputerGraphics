@@ -3,6 +3,7 @@
 #include <QtGui>
 #include <QtWidgets>
 #include <QtOpenGL>
+#include "Obj.h"
 
 /**
  * This is just a basic OpenGL widget that will allow a change of background color.
@@ -12,6 +13,10 @@ class BasicWidget : public QOpenGLWidget, protected QOpenGLFunctions
   Q_OBJECT
 
 private:
+  Obj bunnyObj;
+  Obj monkeyObj;
+  Obj cubeObj;
+
   QString vertexShaderString() const;
   QString fragmentShaderString() const;
   void createShader();

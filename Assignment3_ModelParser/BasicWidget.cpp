@@ -2,7 +2,14 @@
 
 //////////////////////////////////////////////////////////////////////
 // Publics
-BasicWidget::BasicWidget(QWidget* parent) : QOpenGLWidget(parent), vbo_(QOpenGLBuffer::VertexBuffer), ibo_(QOpenGLBuffer::IndexBuffer), logger_(this)
+BasicWidget::BasicWidget(QWidget* parent) : 
+	QOpenGLWidget(parent), 
+	vbo_(QOpenGLBuffer::VertexBuffer), 
+	ibo_(QOpenGLBuffer::IndexBuffer),
+	logger_(this), 
+	bunnyObj("./objects/bunny.obj"),
+	monkeyObj("./objects/monkey.obj"),
+	cubeObj("./objects/cube.obj")
 {
   setFocusPolicy(Qt::StrongFocus);
 }
@@ -24,14 +31,10 @@ QString BasicWidget::vertexShaderString() const
   QString str =
     "#version 330\n"
     "layout(location = 0) in vec3 position;\n"
-    "layout(location = 1) in vec4 color;\n"
     
-    "out vec4 vertColor;\n"
-
     "void main()\n"
     "{\n"
     "  gl_Position = vec4(position, 1.0);\n"
-    "  vertColor = color;\n"
     "}\n";
   return str;
 }
@@ -40,11 +43,10 @@ QString BasicWidget::fragmentShaderString() const
 {
   QString str =
 	"#version 330\n"
-    "in vec4 vertColor;\n"
 	"out vec4 color;\n"
 	"void main()\n"
 	"{\n"
-	"  color = vertColor;\n"
+	"  color = vec4(1.0,1.0,1.0,1.0);\n"
 	"}\n";
   return str;
 }
@@ -119,33 +121,23 @@ void BasicWidget::initializeGL()
 void BasicWidget::doRender() {
   createShader();
 
-  static const GLfloat verts[21] = {
-    0.0f, 0.0f, 0.0f, /* Center vertex position */ 1.0f, 0.0f, 0.0f, 1.0f, // red
-    1.0f, 1.0f, 0.0f,  /* Top right vertex position */ 0.0f, 1.0f, 0.0f, 1.0f, // green
-    -1.0f,  1.0f, 0.0f,  /* Top left vertex position */ 0.0f, 0.0f, 1.0f, 1.0f // blue
-  };
-
-  static const GLuint idx[3] = {0, 1, 2};
-
   vbo_.create();
   vbo_.setUsagePattern(QOpenGLBuffer::StaticDraw);
   vbo_.bind();
-  vbo_.allocate(verts, 21 * sizeof(GL_UNSIGNED_INT));
+  vbo_.allocate(&(bunnyObj.vertices[0]), bunnyObj.vertices.size() * sizeof(GL_FLOAT));
 
   ibo_.create();
   ibo_.setUsagePattern(QOpenGLBuffer::StaticDraw);
   ibo_.bind();
-  ibo_.allocate(idx, 3 * sizeof(GL_UNSIGNED_INT));
+  ibo_.allocate(&(bunnyObj.faceVertices[0]), bunnyObj.faceVertices.size() * sizeof(GL_UNSIGNED_INT));
 
   vao_.create();
   vao_.bind();
   vbo_.bind();
 
   shaderProgram_.enableAttributeArray(0);
-  shaderProgram_.setAttributeBuffer(0, GL_FLOAT, 0, 3, 7*sizeof(GL_FLOAT));
+  shaderProgram_.setAttributeBuffer(0, GL_FLOAT, 0, 0, 3);
 
-  shaderProgram_.enableAttributeArray(1);
-  shaderProgram_.setAttributeBuffer(1, GL_FLOAT, 3*sizeof(GL_FLOAT), 4, 7*sizeof(GL_FLOAT));
   ibo_.bind();
 
   vao_.release();
@@ -169,7 +161,7 @@ void BasicWidget::paintGL()
 
   shaderProgram_.bind();
   vao_.bind();
-  glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+  glDrawElements(GL_TRIANGLES, bunnyObj.faceVertices.size(), GL_UNSIGNED_INT, 0);
   vao_.release();
   shaderProgram_.release();
 }
