@@ -2,3 +2,5 @@
 */CMake*
 */cmake*
 */*_autogen
+*/compile_commands.json
+*/.clangd
