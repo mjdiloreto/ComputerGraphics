@@ -9,9 +9,8 @@ BasicWidget::BasicWidget(QWidget* parent) :
 	iboBunny_(QOpenGLBuffer::IndexBuffer),
 	iboMonkey_(QOpenGLBuffer::IndexBuffer),
 	logger_(this), 
-	bunnyObj("./objects/bunny.obj"),
-	monkeyObj("./objects/monkey.obj"),
-	cubeObj("./objects/cube.obj")
+	bunnyObj("./objects/bunny_centered.obj"),
+	monkeyObj("./objects/monkey_centered.obj")
 {
   setFocusPolicy(Qt::StrongFocus);
 }

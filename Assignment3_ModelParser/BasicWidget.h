@@ -20,7 +20,6 @@ private:
 
   Obj bunnyObj;
   Obj monkeyObj;
-  Obj cubeObj;
 
   QString vertexShaderString() const;
   QString fragmentShaderString() const;
