@@ -13,6 +13,11 @@ class BasicWidget : public QOpenGLWidget, protected QOpenGLFunctions
   Q_OBJECT
 
 private:
+  // Initially show the bunny
+  bool monkeyMode = 0;
+  // Start with line mode to show the full render
+  bool fillMode = 1;
+
   Obj bunnyObj;
   Obj monkeyObj;
   Obj cubeObj;
@@ -32,8 +37,10 @@ protected:
   void resizeGL(int w, int h) override;
   void paintGL() override;
 
-  QOpenGLBuffer vbo_;
-  QOpenGLBuffer ibo_;
+  QOpenGLBuffer vboBunny_;
+  QOpenGLBuffer vboMonkey_;
+  QOpenGLBuffer iboBunny_;
+  QOpenGLBuffer iboMonkey_;
 
   QOpenGLShaderProgram shaderProgram_;
   QOpenGLDebugLogger logger_;
