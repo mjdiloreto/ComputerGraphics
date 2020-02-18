@@ -89,6 +89,7 @@ void BasicWidget::keyReleaseEvent(QKeyEvent* keyEvent)
     update();
   } else if (keyEvent->key() == Qt::Key_Q) {
     qDebug() << "q pressed. Exit application";
+    exit(0);
     update(); 
   } else if (keyEvent->key() == Qt::Key_1) {
     qDebug() << "1 pressed. Render Bunny";
@@ -172,10 +173,15 @@ void BasicWidget::doRender() {
   		  GL_FLOAT, // type
   		  0, // offset
   		  3, // tupleSize
-  		  3*sizeof(GL_FLOAT)); // Stride
+  		  0); // Stride
 
   ibo_.bind();
 
+  Obj objUsing = monkeyMode ? monkeyObj : bunnyObj;
+  glDrawElements(GL_TRIANGLES, objUsing.faceVertices.size(), GL_UNSIGNED_INT, 0);
+  
+  vbo_.release();
+  ibo_.release();
   vao_.release();
   shaderProgram_.release();
   
@@ -192,15 +198,10 @@ void BasicWidget::paintGL()
   glDisable(GL_DEPTH_TEST);
   glDisable(GL_CULL_FACE);
 
-  glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+  glPolygonMode(GL_FRONT_AND_BACK, fillMode ? GL_FILL : GL_LINE);
 
   glClearColor(0.f, 0.f, 0.f, 1.f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  shaderProgram_.bind();
-  vao_.bind();
-  Obj objUsing = monkeyMode ? monkeyObj : bunnyObj;
-  glDrawElements(GL_TRIANGLES, objUsing.faceVertices.size(), GL_UNSIGNED_INT, 0);
-  vao_.release();
-  shaderProgram_.release();
+  doRender();
 }
