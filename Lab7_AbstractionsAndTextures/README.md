@@ -11,10 +11,11 @@
 ## Modify this section
 
 - How many hours did it take you to complete this lab?
+  - 1 hour
 - Did you collaborate with any other students/TAs/Professors?
+  - Nicola Licata
 - Did you use any external resources? (Cite them below)
-  - tbd
-  - tbd
+  - N/A
 - (Optional) What was your favorite part of the lab?
 - (Optional) How would you improve the lab?
 
@@ -40,9 +41,13 @@ During your co-ops, internships, and jobs you will often do a code review. Today
 
 Discuss with your partner the following:
 
-1. What are the advantages/disadvantages of the "Renderable" class?: *Add your answer here*
-2. Why do we call Renderable::draw(..) with the matrix info as parameters?: *Add your answer here*
-3. How you can move models in the scene?: *Add your answer here*
+1. What are the advantages/disadvantages of the "Renderable" class?:
+  - Advantage - Encapsulation helps avoid code duplication for additional renderables.
+  - Disadvantage - The abstraction might be insufficient if we need additional textures associated with a renderable.
+2. Why do we call Renderable::draw(..) with the matrix info as parameters?:
+  - The camera matrix is likely to change each time the renderable is drawn, so it is convenient for the method to take it as a parameter.
+3. How you can move models in the scene?:
+  - Moving models in a scene can be accomplished by multiplying its model matrix by a translation matrix.
 
 ## Part 2 - Textures
 
