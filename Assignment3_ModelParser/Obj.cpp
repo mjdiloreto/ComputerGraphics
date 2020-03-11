@@ -43,16 +43,28 @@ void Obj::parseNormal(std::vector<std::string> tokens) {
 	}
 }
 
+void print(std::string msg) {
+	std::cout << msg << std::endl;
+}
+
 void Obj::parseFace(std::vector<std::string> tokens) {
 	//std::vector<int> verts;
 	//std::vector<int> norms;
 	for(int i = 1; i < tokens.size(); i++) {
-		int delimIndex = tokens[i].find("//", 0);
-		std::string vert = tokens[i].substr(0, delimIndex);
-		std::string norm = tokens[i].substr(delimIndex+2, tokens[i].length()); 
+		int firstDelimIndex = tokens[i].find("/", 0);
+		std::string vert = tokens[i].substr(0, firstDelimIndex);
+		std::string afterVert = tokens[i].substr(firstDelimIndex+1);
+		int secondDelimIndex = afterVert.find("/", 0);
+		std::string texture = afterVert.substr(0, secondDelimIndex); 
+		std::string norm = afterVert.substr(secondDelimIndex+1); 
 		//verts.push_back(stoi(vert)-1);
 		//norms.push_back(stoi(norm)-1);
 		faceVertices.push_back(stoi(vert)-1);
+	 	try {
+	 	  faceTextures.push_back(stoi(texture)-1);
+	 	} catch (const std::invalid_argument& ia) {
+	 	  // ignore
+	 	}
 		faceNormals.push_back(stoi(norm)-1);
 	}
 	//faceVertices.push_back(verts);
@@ -63,6 +75,7 @@ Obj::~Obj() {
     vertices.clear();
     normals.clear();
     faceVertices.clear();
+    faceTextures.clear();
     faceNormals.clear();
 }
 

@@ -19,10 +19,16 @@ class Obj {
 	std::vector<int> faceVertices;
 	//std::vector<std::vector<int>> faceVertices;
 
+	// Index of each texture in the texture ppm.
+	std::vector<int> faceTextures;
+
+	//std::vector<std::vector<int>> faceVertices;
 	// Index of each normal in the normals matrix
 	std::vector<int> faceNormals;
 	//std::vector<std::vector<int>> faceNormals;
 
+	// TODO add ppm for textures.
+	
 	// build Obj based on an input .obj file
 	Obj(std::string filename);
 
