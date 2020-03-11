@@ -1,6 +1,7 @@
 #include "BasicWidget.h"
 
 #include "UnitQuad.h"
+#include <math.h>
 
 //////////////////////////////////////////////////////////////////////
 // Publics
@@ -45,8 +46,10 @@ void BasicWidget::keyReleaseEvent(QKeyEvent* keyEvent)
 void BasicWidget::mousePressEvent(QMouseEvent* mouseEvent)
 {
   if (mouseEvent->button() == Qt::LeftButton) {
+    qDebug() << "Left mouse clicked";
     mouseAction_ = Rotate;
   } else if (mouseEvent->button() == Qt::RightButton) {
+    qDebug() << "Right mouse clicked";
     mouseAction_ = Zoom;
   }
   lastMouseLoc_ = mouseEvent->pos();
@@ -60,10 +63,13 @@ void BasicWidget::mouseMoveEvent(QMouseEvent* mouseEvent)
   QPoint delta = mouseEvent->pos() - lastMouseLoc_;
   lastMouseLoc_ = mouseEvent->pos();
   if (mouseAction_ == Rotate) {
-    // TODO:  Implement rotating the camera
+  	qDebug() << camera_.position();
+  	QVector3D newPos = camera_.position() * 1;
+  	newPos.setY(1.0f/lastMouseLoc_.y());
+  	camera_.setPosition(newPos);
+  	qDebug() << camera_.position();
   } else if (mouseAction_ == Zoom) {
-    // TODO:  Implement zoom by moving the camera
-    // Zooming is moving along the gaze direction by some amount.
+  	camera_.setPerspective(lastMouseLoc_.y(), ((float)width())/((float)height()), 0.1f, 20.0f);
   } 
   update();
 }
@@ -154,7 +160,6 @@ void BasicWidget::paintGL()
 
   for (auto renderable : renderables_) {
       renderable->update(msSinceRestart);
-      // TODO:  Understand that the camera is now governing the view and projection matrices
       renderable->draw(world_, camera_.getViewMatrix(), camera_.getProjectionMatrix());
   }
   update();

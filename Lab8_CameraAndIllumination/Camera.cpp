@@ -1,5 +1,7 @@
 #include "Camera.h"
 
+#include <stdio.h>
+
 Camera::Camera() : position_(0.0, 0.0, 0.0), lookAt_(0.0, 0.0, 0.0), up_(0.0, 1.0, 0.0)
 {
 	projection_.setToIdentity();
@@ -16,7 +18,9 @@ void Camera::setPerspective(float fov, float aspect, float near, float far)
 
 void Camera::setPosition(const QVector3D& position)
 {
-	position_ = position;
+	position_.setX(position.x());
+	position_.setY(position.y());
+	position_.setZ(position.z());
 }
 
 QVector3D Camera::position() const
@@ -26,7 +30,6 @@ QVector3D Camera::position() const
 
 void Camera::translateCamera(const QVector3D& delta)
 {
-	// TODO:  Implement camera translation
 }
 
 void Camera::setGazeVector(const QVector3D& gaze)
