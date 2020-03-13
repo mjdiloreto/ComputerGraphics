@@ -6,8 +6,10 @@
 #include <QtGui>
 #include <QtOpenGL>
 
-// TODO:  you have to include whatever application-specific code there is here.  This should be
-// a subclass of QMainWindow!
+// Lab application
+#include "App.h"
+
+static bool enableGLDebug = true;
 
 int main(int argc, char** argv) {
   QApplication a(argc, argv);
@@ -19,10 +21,12 @@ int main(int argc, char** argv) {
   fmt.setStencilBufferSize(8);
   fmt.setVersion(3,3);
   fmt.setProfile(QSurfaceFormat::CoreProfile);
+  if(enableGLDebug) {
+    fmt.setOption(QSurfaceFormat::DebugContext);
+  }
   QSurfaceFormat::setDefaultFormat(fmt);
-
-  // TODO:  Replace the following 3 lines with whatever you need to create, show, and execute your application
-  //Application app;
-  //app.show();
-  //return QApplication::exec();
+  
+  App app;
+  app.show();
+  return QApplication::exec();
 }
