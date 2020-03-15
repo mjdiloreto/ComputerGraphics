@@ -31,19 +31,19 @@ class Obj {
 	//std::vector<std::vector<int>> faceNormals;
 
 	// All vertex information combined. each vertex defined by 5 floats x,y,z from vertices, and s,t from textures.
-	std::vector<float> vertexData;
+	std::vector<float> combinedPositionData;
+	std::vector<float> combinedTextureData;
 
 	// Indices for vertices in the vertexData. A combination of faceVertices and faceTextures.
 	std::vector<int> combinedIndexes;
 
-	// TODO add ppm for textures.
+	// path to the ppm file containing diffuse texture information. defined by the .mtl file referenced by a .obj file's "mtllib" line.
 	std::string diffuseTextureFilename;
 	
 	// build Obj based on an input .obj file
 	Obj(std::string filename);
 
-	// cleanup allocated data structures.
-	~Obj();
+	// ~Obj(); // I don't think we need a destructor, because we never call "new"
 
 	private:
 		void parseVertex(std::vector<std::string> tokens);

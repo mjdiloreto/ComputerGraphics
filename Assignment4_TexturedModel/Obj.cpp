@@ -110,11 +110,11 @@ void Obj::combineIndexes() {
             combinedIndexes.push_back(hashMap[data]);
 		} else {
             hashMap[data] = indexNumber;
-            vertexData.push_back(data[0]);
-            vertexData.push_back(data[1]);
-            vertexData.push_back(data[2]);
-            vertexData.push_back(data[3]);
-            vertexData.push_back(data[4]);
+            combinedPositionData.push_back(data[0]);
+            combinedPositionData.push_back(data[1]);
+            combinedPositionData.push_back(data[2]);
+            combinedTextureData.push_back(data[3]);
+            combinedTextureData.push_back(data[4]);
             combinedIndexes.push_back(indexNumber);
             indexNumber++;
 		}
@@ -133,13 +133,5 @@ void Obj::parseMtl(std::vector<std::string> tokens, std::string filename) {
 				this->diffuseTextureFilename = replaceFilename(filename, tok[1]);
 		}
     }
-}
-
-Obj::~Obj() {
-    vertices.clear();
-    normals.clear();
-    faceVertices.clear();
-    faceTextures.clear();
-    faceNormals.clear();
 }
 

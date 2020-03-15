@@ -1,4 +1,5 @@
 #include "BasicWidget.h"
+#include "Obj.h"
 
 //////////////////////////////////////////////////////////////////////
 // Publics
@@ -38,42 +39,30 @@ void BasicWidget::initializeGL()
   initializeOpenGLFunctions();
 
   qDebug() << QDir::currentPath();
-  QString texFile = "cat3.ppm";
+
+  Obj houseObj = Obj("./objects/house/house_obj.obj");
+  QString texFile = QString::fromStdString(houseObj.diffuseTextureFilename);
   QVector<QVector3D> pos;
   QVector<QVector3D> norm;
   QVector<QVector2D> texCoord;
   QVector<unsigned int> idx;
-  pos << QVector3D(-0.8, -0.8, 0.0);
-  pos << QVector3D(0.8, -0.8, 0.0);
-  pos << QVector3D(-0.8, 0.8, 0.0);
-  pos << QVector3D(0.8, 0.8, 0.0);
-  // We don't actually use the normals right now, but this will be useful later!
-  norm << QVector3D(0.0, 0.0, 1.0);
-  norm << QVector3D(0.0, 0.0, 1.0);
-  norm << QVector3D(0.0, 0.0, 1.0);
-  norm << QVector3D(0.0, 0.0, 1.0);
-  
-  texCoord << QVector2D(0.0, 0.0);
-  texCoord << QVector2D(0.0, 1.0);
-  texCoord << QVector2D(1.0, 0.0);
-  texCoord << QVector2D(1.0, 1.0);
 
-  idx << 0 << 1 << 2 << 2 << 1 << 3;
-
-  Renderable* ren = new Renderable();
-  ren->init(pos, norm, texCoord, idx, texFile);
+  for(int i = 0; i < houseObj.combinedPositionData.size(); i+=3) {
+      pos << QVector3D(houseObj.combinedPositionData[i], houseObj.combinedPositionData[i+1], houseObj.combinedPositionData[i+2]);
+  }
+  for(int i = 0; i < houseObj.combinedTextureData.size(); i+=2) {
+      texCoord << QVector2D(houseObj.combinedTextureData[i], houseObj.combinedTextureData[i+1]);
+  }
+  for(int i = 0; i < houseObj.combinedIndexes.size(); i++) {
+  	  norm << QVector2D(0.0,0.0); // TODO when we use normals they go here.
+      idx<< houseObj.combinedIndexes[i];
+  }
 
   Renderable* ren1 = new Renderable();
   ren1->init(pos, norm, texCoord, idx, texFile);
-  ren1->setRotationAxis(QVector3D(1,0,0));
+  ren1->setRotationAxis(QVector3D(0,1,0));
 
-  Renderable* ren2 = new Renderable();
-  ren2->init(pos, norm, texCoord, idx, texFile);
-  ren2->setRotationAxis(QVector3D(0,1,0));
-
-  renderables_.push_back(ren);
   renderables_.push_back(ren1);
-  renderables_.push_back(ren2);
   glViewport(0, 0, width(), height());
   frameTimer_.start();
 }
