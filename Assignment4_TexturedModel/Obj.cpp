@@ -93,18 +93,17 @@ std::string replaceFilename(std::string path, std::string filename) {
 
 void Obj::combineIndexes() {
 	int indexNumber = 0;
-	for(int i = 0; i < this->faceVertices.size(); i ++) {
+	std::map<std::vector<float>, int> hashMap;
+	for(int i = 0; i < this->faceVertices.size(); i++) {
         int vertexIndex = faceVertices[i];
         int textureIndex = faceTextures[i];
 
 		std::vector<float> data;
-		data.push_back(vertices[vertexIndex]);
-	    data.push_back(vertices[vertexIndex+1]);
-	    data.push_back(vertices[vertexIndex+2]);
-        data.push_back(textures[textureIndex]);
-        data.push_back(textures[textureIndex+1]);
-
-		std::map<std::vector<float>, int> hashMap;
+		data.push_back(vertices[(vertexIndex*3)]);
+	    data.push_back(vertices[(vertexIndex*3)+1]);
+	    data.push_back(vertices[(vertexIndex*3)+2]);
+        data.push_back(textures[(textureIndex*2)]);
+        data.push_back(textures[(textureIndex*2)+1]);
 
         if (hashMap.count(data)) {
             combinedIndexes.push_back(hashMap[data]);

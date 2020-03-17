@@ -49,13 +49,13 @@ void BasicWidget::initializeGL()
 
   for(int i = 0; i < houseObj.combinedPositionData.size(); i+=3) {
       pos << QVector3D(houseObj.combinedPositionData[i], houseObj.combinedPositionData[i+1], houseObj.combinedPositionData[i+2]);
+  	  norm << QVector3D(0.0,0.0,0.0); // TODO when we use normals they go here.
   }
   for(int i = 0; i < houseObj.combinedTextureData.size(); i+=2) {
       texCoord << QVector2D(houseObj.combinedTextureData[i], houseObj.combinedTextureData[i+1]);
   }
   for(int i = 0; i < houseObj.combinedIndexes.size(); i++) {
-  	  norm << QVector2D(0.0,0.0); // TODO when we use normals they go here.
-      idx<< houseObj.combinedIndexes[i];
+      idx << houseObj.combinedIndexes[i];
   }
 
   Renderable* ren1 = new Renderable();
