@@ -2,20 +2,6 @@
 
 #include <QtGui>
 #include <QtOpenGL>
-#include <fstream>
-#include <iterator>
-
-void vectorToFile(std::vector<float> v, std::string filename) {
-	std::ofstream output_file(filename);
-    std::ostream_iterator<float> output_iterator(output_file, "\n");
-    std::copy(v.begin(), v.end(), output_iterator);
-}
-
-void vectorToFile(std::vector<int> v, std::string filename) {
-	std::ofstream output_file(filename);
-    std::ostream_iterator<int> output_iterator(output_file, "\n");
-    std::copy(v.begin(), v.end(), output_iterator);
-}
 
 Renderable::Renderable() : vbo_(QOpenGLBuffer::VertexBuffer), ibo_(QOpenGLBuffer::IndexBuffer), texture_(QOpenGLTexture::Target2D), numTris_(0), vertexSize_(0), rotationAxis_(0.0, 0.0, 1.0), rotationSpeed_(0.25)
 {
@@ -69,27 +55,6 @@ void Renderable::init(const QVector<QVector3D>& positions, const QVector<QVector
 		qDebug() << "[Renderable]::init() -- texCoords " << texCoords.size();
 		return;
 	}
-
-	std::vector<float> debugPositions;
-	for (int i = 0; i < positions.size(); ++i) {
-		debugPositions.push_back(positions.at(i).x());
-		debugPositions.push_back(positions.at(i).y());
-		debugPositions.push_back(positions.at(i).z());
-	}
-
-	std::vector<float> debugTextures;
-	for (int i = 0; i < texCoords.size(); ++i) {
-		debugTextures.push_back(texCoords.at(i).x());
-		debugTextures.push_back(texCoords.at(i).y());
-	}
-
-	std::vector<int> debugIndexes;
-	for (int i = 0; i < indexes.size(); ++i) {
-		debugIndexes.push_back(indexes.at(i));
-	}
-	vectorToFile(debugPositions, "debugPositions.txt");
-	vectorToFile(debugTextures, "debugTextures.txt");
-	vectorToFile(debugIndexes, "debugIndexes.txt");
 
 	// Set our model matrix to identity
 	modelMatrix_.setToIdentity();
@@ -180,7 +145,7 @@ void Renderable::draw(const QMatrix4x4& view, const QMatrix4x4& projection)
 
 	vao_.bind();
 	texture_.bind();
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, numTris_*3, GL_UNSIGNED_INT, 0);
 	texture_.release();
 	vao_.release();
 	shader_.release();
