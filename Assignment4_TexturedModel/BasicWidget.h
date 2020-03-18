@@ -14,6 +14,7 @@ class BasicWidget : public QOpenGLWidget, protected QOpenGLFunctions
   Q_OBJECT
 
 private:
+  std::string objFilename_;
   QMatrix4x4 model_;
   QMatrix4x4 view_;
   QMatrix4x4 projection_;
@@ -34,7 +35,7 @@ protected:
   void paintGL() override;
   
 public:
-  BasicWidget(QWidget* parent=nullptr);
+  BasicWidget(QWidget* parent=nullptr, std::string objFilename="");
   virtual ~BasicWidget();
   
   // Make sure we have some size that makes sense.

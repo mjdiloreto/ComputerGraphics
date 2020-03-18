@@ -3,8 +3,9 @@
 
 //////////////////////////////////////////////////////////////////////
 // Publics
-BasicWidget::BasicWidget(QWidget* parent) : QOpenGLWidget(parent), logger_(this)
+BasicWidget::BasicWidget(QWidget* parent, std::string objFilename) : QOpenGLWidget(parent), logger_(this)
 {
+  objFilename_ = objFilename;
   setFocusPolicy(Qt::StrongFocus);
 }
 
@@ -40,7 +41,7 @@ void BasicWidget::initializeGL()
 
   qDebug() << QDir::currentPath();
 
-  Obj houseObj = Obj("./objects/house/house_obj.obj");
+  Obj houseObj = Obj(objFilename_);
   QString texFile = QString::fromStdString(houseObj.diffuseTextureFilename);
   QVector<QVector3D> pos;
   QVector<QVector3D> norm;
@@ -93,7 +94,7 @@ void BasicWidget::resizeGL(int w, int h)
 void BasicWidget::paintGL()
 {
   qint64 msSinceRestart = frameTimer_.restart();
-  glDisable(GL_DEPTH_TEST);
+  glEnable(GL_DEPTH_TEST);
   glDisable(GL_CULL_FACE);
 
   glClearColor(0.f, 0.f, 0.f, 1.f);

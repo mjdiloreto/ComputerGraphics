@@ -5,13 +5,18 @@
 #include <QtCore>
 #include <QtGui>
 #include <QtOpenGL>
-
 // Lab application
 #include "App.h"
+#include <iostream>
 
 static bool enableGLDebug = true;
 
 int main(int argc, char** argv) {
+  if (argc != 2) {
+    std::cout << "Usage " << argv[0] << " [.obj file path]" << std::endl;
+    return 1;
+  }
+  std::cout << "main " << argv[1] << std::endl;
   QApplication a(argc, argv);
   QString appDir = a.applicationDirPath();
   QDir::setCurrent(appDir);
@@ -25,8 +30,9 @@ int main(int argc, char** argv) {
     fmt.setOption(QSurfaceFormat::DebugContext);
   }
   QSurfaceFormat::setDefaultFormat(fmt);
-  
-  App app;
+ 
+  std::string objFilename(argv[1]);
+  App app(0, objFilename);
   app.show();
   return QApplication::exec();
 }

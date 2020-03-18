@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <map>
+#include <cstdlib>
 
 std::vector<std::string> tokenize(std::string s, std::string delimiter) {
 	std::vector<std::string> tokens;
@@ -36,25 +37,28 @@ Obj::Obj(std::string filename) {
 		}
     }
 
-    this->combineIndexes();
+	// Only have to combine if some textures were declared.
+	if (this->textures.size()) {
+        this->combineIndexes();
+	}
     inFile.close();
 }
 
 void Obj::parseVertex(std::vector<std::string> tokens) {
 	for(int i = 1; i < tokens.size(); i++) {
-		vertices.push_back(stof(tokens[i]));
+		vertices.push_back(strtof(tokens[i].c_str(), 0));
 	}
 }
 
 void Obj::parseNormal(std::vector<std::string> tokens) {
 	for(int i = 1; i < tokens.size(); i++) {
-		normals.push_back(stof(tokens[i]));
+		normals.push_back(strtof(tokens[i].c_str(), 0));
 	}
 }
 
 void Obj::parseTexture(std::vector<std::string> tokens) {
 	for(int i = 1; i < tokens.size(); i++) {
-		textures.push_back(stof(tokens[i]));
+		textures.push_back(strtof(tokens[i].c_str(), 0));
 	}
 }
 

@@ -59,7 +59,9 @@ void Renderable::init(const QVector<QVector3D>& positions, const QVector<QVector
 	// Set our model matrix to identity
 	modelMatrix_.setToIdentity();
 	// Load our texture.
-	texture_.setData(QImage(textureFile));
+	if (textureFile != "") {
+	    texture_.setData(QImage(textureFile));
+	}
 
 	// set our number of trianges.
 	numTris_ = indexes.size() / 3;
