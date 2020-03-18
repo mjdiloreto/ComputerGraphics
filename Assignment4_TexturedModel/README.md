@@ -6,8 +6,8 @@
 
 
 * Name and partners name(At most 1 partner for this Assignment): 
-  * Nicola Licata
-  * Partner: Matt DiLoreto
+  * Matthew DiLoreto 
+  * Partner: Nicola Licata
 * How many hours did it take you to complete this Assignment? 
   * 8
 * Did you collaborate or share ideas with any other students/TAs/Professors? 
