@@ -14,6 +14,7 @@ class BasicWidget : public QOpenGLWidget, protected QOpenGLFunctions
   Q_OBJECT
 
 private:
+  bool fillmode = 1;
   std::string objFilename_;
   QMatrix4x4 model_;
   QMatrix4x4 view_;

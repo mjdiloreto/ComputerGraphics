@@ -30,6 +30,14 @@ void BasicWidget::keyReleaseEvent(QKeyEvent* keyEvent)
   } else if (keyEvent->key() == Qt::Key_Right) {
     qDebug() << "Right Arrow Pressed";
     update();  // We call update after we handle a key press to trigger a redraw when we are ready
+  } else if (keyEvent->key() == Qt::Key_Q) {
+    qDebug() << "q pressed. Exiting application";
+    exit(0);
+    update(); 
+  } else if (keyEvent->key() == Qt::Key_W) {
+    qDebug() << "w pressed. Toggling wireframe mode.";
+    fillmode = !fillmode;
+    update();
   } else {
     qDebug() << "You Pressed an unsupported Key!";
   }
@@ -83,7 +91,7 @@ void BasicWidget::resizeGL(int w, int h)
     }
   glViewport(0, 0, w, h);
   view_.setToIdentity();
-  view_.lookAt(QVector3D(0.0f, 0.0f, 2.0f),
+  view_.lookAt(QVector3D(5.0f, 0.0f, 2.0f),
       QVector3D(0.0f, 0.0f, 0.0f),
       QVector3D(0.0f, 1.0f, 0.0f));
   projection_.setToIdentity();
@@ -96,6 +104,7 @@ void BasicWidget::paintGL()
   qint64 msSinceRestart = frameTimer_.restart();
   glEnable(GL_DEPTH_TEST);
   glDisable(GL_CULL_FACE);
+  glPolygonMode(GL_FRONT_AND_BACK, fillmode ? GL_FILL : GL_LINE);
 
   glClearColor(0.f, 0.f, 0.f, 1.f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
