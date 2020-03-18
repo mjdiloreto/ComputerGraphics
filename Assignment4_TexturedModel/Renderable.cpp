@@ -60,7 +60,7 @@ void Renderable::init(const QVector<QVector3D>& positions, const QVector<QVector
 	modelMatrix_.setToIdentity();
 	// Load our texture.
 	if (textureFile != "") {
-	    texture_.setData(QImage(textureFile));
+	    texture_.setData(QImage(textureFile).mirrored(true, true));
 	}
 
 	// set our number of trianges.
