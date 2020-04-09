@@ -1,7 +1,7 @@
 #include "TerrainQuad.h"
 
 #include <QtGui>
-#include <QOpenGLFunctions_3_3_core>
+#include <QOpenGLFunctions_3_3_Core>
 
 TerrainQuad::TerrainQuad() : lightPos_(0.5f, 0.5f, -2.0f), sign_(1.0f), numIdxPerStrip_(0), numStrips_(0), heightTexture_(QOpenGLTexture::Target2D)
 {}
