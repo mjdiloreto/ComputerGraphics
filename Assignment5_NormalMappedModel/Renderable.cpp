@@ -3,7 +3,7 @@
 #include <QtGui>
 #include <QtOpenGL>
 
-Renderable::Renderable() : vbo_(QOpenGLBuffer::VertexBuffer), ibo_(QOpenGLBuffer::IndexBuffer), texture_(QOpenGLTexture::Target2D), numTris_(0), vertexSize_(0), rotationAxis_(0.0, 0.0, 1.0), rotationSpeed_(0.25)
+Renderable::Renderable() : vbo_(QOpenGLBuffer::VertexBuffer), ibo_(QOpenGLBuffer::IndexBuffer), texture_(QOpenGLTexture::Target2D), numTris_(0), vertexSize_(0), rotationAxis_(0.0, 0.0, 1.0), rotationSpeed_(0.25), lightPos_(0.5f, 0.5f, -2.0f)
 {
 	rotationAngle_ = 0.0;
 }
@@ -126,6 +126,28 @@ void Renderable::update(const qint64 msSinceLastFrame)
 	while(rotationAngle_ >= 360.0) {
 		rotationAngle_ -= 360.0;
 	}
+      // This is where we want to maintain our light.
+    float secs = (float)msSinceLastFrame / 1000.0f;
+    float angle = secs * 180.0f;
+    // Rotate our light around the scene
+    QMatrix4x4 rot;
+    rot.setToIdentity();
+    rot.rotate(angle, 0.0, 1.0, 0.0);
+    QVector3D newPos = rot * lightPos_;
+    lightPos_ = newPos;
+    
+    newPos.setX(0.5);
+    shader_.bind();
+    shader_.setUniformValue("pointLights[0].color", 1.0f, 1.0f, 1.0f);
+    shader_.setUniformValue("pointLights[0].position", newPos);
+
+    shader_.setUniformValue("pointLights[0].ambientIntensity", 0.5f);
+    shader_.setUniformValue("pointLights[0].specularStrength", 0.5f);
+    shader_.setUniformValue("pointLights[0].constant", 1.0f);
+    shader_.setUniformValue("pointLights[0].linear", 0.09f);
+    shader_.setUniformValue("pointLights[0].quadratic", 0.032f);
+
+    shader_.release();
 }
 
 void Renderable::draw(const QMatrix4x4& view, const QMatrix4x4& projection)

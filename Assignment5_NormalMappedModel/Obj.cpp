@@ -67,8 +67,6 @@ void print(std::string msg) {
 }
 
 void Obj::parseFace(std::vector<std::string> tokens) {
-	//std::vector<int> verts;
-	//std::vector<int> norms;
 	for(int i = 1; i < tokens.size(); i++) {
 		int firstDelimIndex = tokens[i].find("/", 0);
 		std::string vert = tokens[i].substr(0, firstDelimIndex);
@@ -76,18 +74,14 @@ void Obj::parseFace(std::vector<std::string> tokens) {
 		int secondDelimIndex = afterVert.find("/", 0);
 		std::string texture = afterVert.substr(0, secondDelimIndex); 
 		std::string norm = afterVert.substr(secondDelimIndex+1); 
-		//verts.push_back(stoi(vert)-1);
-		//norms.push_back(stoi(norm)-1);
-		faceVertices.push_back(stoi(vert)-1);
 	 	try {
+		  faceVertices.push_back(stoi(vert)-1);
 	 	  faceTextures.push_back(stoi(texture)-1);
+		  faceNormals.push_back(stoi(norm)-1);
 	 	} catch (const std::invalid_argument& ia) {
 	 	  // ignore
 	 	}
-		faceNormals.push_back(stoi(norm)-1);
 	}
-	//faceVertices.push_back(verts);
-	//faceNormals.push_back(norms);
 }
 
 std::string replaceFilename(std::string path, std::string filename) {
@@ -134,6 +128,8 @@ void Obj::parseMtl(std::vector<std::string> tokens, std::string filename) {
 			std::vector<std::string> tok = tokenize(currentLine, " ");
 			if (!tok[0].compare("map_Kd"))
 				this->diffuseTextureFilename = replaceFilename(filename, tok[1]);
+			if (!tok[0].compare("map_Bump"))
+				this->normalTextureFilename = replaceFilename(filename, tok[1]);
 		}
     }
 }

@@ -40,6 +40,9 @@ class Obj {
 	// path to the ppm file containing diffuse texture information. defined by the .mtl file referenced by a .obj file's "mtllib" line.
 	std::string diffuseTextureFilename;
 	
+	// path to the ppm file containing normal information. Defined by the .mtl file referenced by a .obj file's "mtllib" line.
+	std::string normalTextureFilename;
+
 	// build Obj based on an input .obj file
 	Obj(std::string filename);
 

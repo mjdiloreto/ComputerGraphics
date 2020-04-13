@@ -23,6 +23,8 @@ protected:
 	unsigned int numTris_;
 	int vertexSize_;
 
+	QVector3D lightPos_;
+
 	// Define our axis of rotation for animation
 	QVector3D rotationAxis_;
 	float rotationSpeed_;
