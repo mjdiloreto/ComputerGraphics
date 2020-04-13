@@ -46,16 +46,28 @@ void UnitQuad::update(const qint64 msSinceLastFrame)
     // Because we aren't doing any occlusion, the lighting on the walls looks
     // super wonky.  Instead, just move the light on the z axis.
     newPos.setX(0.5);
-    // TODO:  Understand how the light gets initialized/setup.
     shader_.bind();
-    shader_.setUniformValue("pointLights[0].color", 1.0f, 1.0f, 1.0f);
-    shader_.setUniformValue("pointLights[0].position", newPos);
 
-    shader_.setUniformValue("pointLights[0].ambientIntensity", 0.5f);
-    shader_.setUniformValue("pointLights[0].specularStrength", 0.5f);
-    shader_.setUniformValue("pointLights[0].constant", 1.0f);
-    shader_.setUniformValue("pointLights[0].linear", 0.09f);
-    shader_.setUniformValue("pointLights[0].quadratic", 0.032f);
+    for(int i = 0; i < 3; i++) {
+		std::string prefix = "pointLights[";
+		prefix += std::to_string(i);
+		prefix += "]";
+
+		// each light should rotate differently so we can see them all.
+		QMatrix4x4 newRot;
+		newRot.setToIdentity();
+		for(int j = 0; j < i; j++) {
+		    newRot*=rot;
+		}
+
+        shader_.setUniformValue((prefix+".color").c_str(), 1.0f*i/3, 1.0f*(i+1)/3, 1.0f*(i+2)/3);
+        shader_.setUniformValue((prefix+".position").c_str(), newRot*lightPos_);
+        shader_.setUniformValue((prefix+".ambientIntensity").c_str(), 0.5f);
+        shader_.setUniformValue((prefix+".specularStrength").c_str(), 0.5f);
+        shader_.setUniformValue((prefix+".constant").c_str(), 1.0f);
+        shader_.setUniformValue((prefix+".linear").c_str(), 0.09f);
+        shader_.setUniformValue((prefix+".quadratic").c_str(), 0.032f);
+	}
 
     shader_.release();
 }
