@@ -3,7 +3,7 @@
 #include <QtGui>
 #include <QtOpenGL>
 
-Renderable::Renderable() : vbo_(QOpenGLBuffer::VertexBuffer), ibo_(QOpenGLBuffer::IndexBuffer), texture_(QOpenGLTexture::Target2D), numTris_(0), vertexSize_(0), rotationAxis_(0.0, 0.0, 1.0), rotationSpeed_(0.25), lightPos_(0.5f, 0.5f, -2.0f)
+Renderable::Renderable() : vbo_(QOpenGLBuffer::VertexBuffer), ibo_(QOpenGLBuffer::IndexBuffer), texture_(QOpenGLTexture::Target2D), normal_(QOpenGLTexture::Target2D), numTris_(0), vertexSize_(0), rotationAxis_(0.0, 0.0, 1.0), rotationSpeed_(0.25), lightPos_(0.5f, 0.5f, -2.0f)
 {
 	rotationAngle_ = 0.0;
 }
@@ -40,6 +40,14 @@ void Renderable::createShaders()
 	if (!ok) {
 		qDebug() << shader_.log();
 	}
+}
+
+void Renderable::init(const QVector<QVector3D>& positions, const QVector<QVector3D>& normals, const QVector<QVector2D>& texCoords, const QVector<unsigned int>& indexes, const QString& textureFile, const QString& normalFile)
+{
+	if (normalFile != "") {
+	    normal_.setData(QImage(normalFile).mirrored(true, true));
+	}
+	init(positions, normals, texCoords, indexes, textureFile);
 }
 
 void Renderable::init(const QVector<QVector3D>& positions, const QVector<QVector3D>& normals, const QVector<QVector2D>& texCoords, const QVector<unsigned int>& indexes, const QString& textureFile)
@@ -168,9 +176,24 @@ void Renderable::draw(const QMatrix4x4& view, const QMatrix4x4& projection)
 	shader_.setUniformValue("projectionMatrix", projection);
 
 	vao_.bind();
-	texture_.bind();
+	// https://stackoverflow.com/questions/25071248/multi-texturing-using-qopengltexture-and-qopenglframebufferobject
+
+	GLuint texId = texture_.textureId();
+	GLuint norId = normal_.textureId();
+	
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texId);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, norId);
+
+	shader_.setUniformValue("tex", GL_TEXTURE0);
+	shader_.setUniformValue("nor", GL_TEXTURE2 - GL_TEXTURE0);
+	//texture_.bind(GL_TEXTURE0);
+	//normal_.bind(GL_TEXTURE2);
 	glDrawElements(GL_TRIANGLES, numTris_*3, GL_UNSIGNED_INT, 0);
-	texture_.release();
+	//normal_.release(GL_TEXTURE2);
+	//texture_.release(GL_TEXTURE0);
 	vao_.release();
 	shader_.release();
 }

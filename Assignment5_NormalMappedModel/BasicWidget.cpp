@@ -90,6 +90,7 @@ void BasicWidget::initializeGL()
 
   Obj houseObj = Obj(objFilename_);
   QString texFile = QString::fromStdString(houseObj.diffuseTextureFilename);
+  QString normFile = QString::fromStdString(houseObj.normalTextureFilename);
   QVector<QVector3D> pos;
   QVector<QVector3D> norm;
   QVector<QVector2D> texCoord;
@@ -107,7 +108,7 @@ void BasicWidget::initializeGL()
   }
 
   Renderable* ren1 = new Renderable();
-  ren1->init(pos, norm, texCoord, idx, texFile);
+  ren1->init(pos, norm, texCoord, idx, texFile, normFile);
   ren1->setRotationAxis(QVector3D(0,1,0));
 
   renderables_.push_back(ren1);

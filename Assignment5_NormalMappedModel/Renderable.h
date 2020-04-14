@@ -13,6 +13,7 @@ protected:
 	QOpenGLShaderProgram shader_;
 	// For now, we have only one texture per object
 	QOpenGLTexture texture_;
+	QOpenGLTexture normal_;
 	// For now, we have a single unified buffer per object
 	QOpenGLBuffer vbo_;
 	// Make sure we have an index buffer.
@@ -42,6 +43,7 @@ public:
 	// for the appropriate size.  The values can be all 0, but must be the same size as
 	// the position array!
 	virtual void init(const QVector<QVector3D>& positions, const QVector<QVector3D>& normals, const QVector<QVector2D>& texCoords, const QVector<unsigned int>& indexes, const QString& textureFile);
+	virtual void init(const QVector<QVector3D>& positions, const QVector<QVector3D>& normals, const QVector<QVector2D>& texCoords, const QVector<unsigned int>& indexes, const QString& textureFile, const QString& normalFile);
 	virtual void update(const qint64 msSinceLastFrame);
 	virtual void draw(const QMatrix4x4& view, const QMatrix4x4& projection);
 
