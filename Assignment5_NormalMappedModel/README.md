@@ -2,16 +2,18 @@
 
 <img align="right" src="./media/lab.png" width="400px" alt="picture">
 
-
-*TODO*: Please edit the following information in your assignment
+NOTE: This doesn't seem to work with the brick wall, but it works for the house, windmill, chapel
 
 * Name and partners name(At most 1 partner for this Assignment): 
+  - Matthew DiLoreto
 * How many hours did it take you to complete this Assignment? 
+  - 8 hours
 * Did you collaborate or share ideas with any other students/TAs/Professors? 
+  - No
 * Did you use any external resources? 
-  * (tbd if any)
-  * (tbd if any)
-  * (tbd if any)
+  * khronos.org 
+  * doc.qt.io
+  * stackoverflow (cited in comments where applicable, I think just Renderable::draw)
 * (Optional) What was the most interesting part of the assignment? How would you improve this assignment?
   
 ## Description
