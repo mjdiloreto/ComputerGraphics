@@ -21,7 +21,8 @@ protected:
   unsigned int particlesPerSecond_;
   Renderable* particleModel_;
 
-  long lastEmittedAt = 0;
+  // we want to emit one right at the beginning.
+  long lastEmittedAt = -1000;
   long timeLivedSoFar = 0;
   
   std::random_device rd{};

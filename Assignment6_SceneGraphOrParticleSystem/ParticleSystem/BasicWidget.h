@@ -20,6 +20,7 @@ private:
   Camera camera_;
   bool fillmode = 1;
   std::string objFilename_;
+  int particlesRate_;
   QMatrix4x4 model_;
   QMatrix4x4 view_;
   QMatrix4x4 projection_;
@@ -50,7 +51,7 @@ protected:
   void paintGL() override;
   
 public:
-  BasicWidget(QWidget* parent=nullptr, std::string objFilename="");
+  BasicWidget(QWidget* parent=nullptr, std::string objFilename="", int particlesRate=15);
   virtual ~BasicWidget();
   
   // Make sure we have some size that makes sense.

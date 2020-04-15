@@ -25,10 +25,6 @@ void Particle::updateAndDraw(unsigned int msSinceLastFrame) {
 
 	velocity_[1] += changeInVelocity;
 
-//	qDebug() << "velocity";
-//	qDebug() << velocity_;
-//	qDebug() << "change in velocity";
-//	qDebug() << changeInVelocity;
     QMatrix4x4 movement;
     movement.setToIdentity();
     movement.translate(velocity_/100);

@@ -182,10 +182,6 @@ void Renderable::draw(const QMatrix4x4& view, const QMatrix4x4& projection)
 	shader_.setUniformValue("viewMatrix", view);
 	shader_.setUniformValue("projectionMatrix", projection);
 	
-//	qDebug() << "In renderable";
-//	qDebug() << modelMat;
-//	qDebug() << view;
-//	qDebug() << projection;
 
 	vao_.bind();
 	// https://stackoverflow.com/questions/25071248/multi-texturing-using-qopengltexture-and-qopenglframebufferobject
@@ -201,11 +197,7 @@ void Renderable::draw(const QMatrix4x4& view, const QMatrix4x4& projection)
 
 	shader_.setUniformValue("tex", GL_TEXTURE0);
 	shader_.setUniformValue("nor", GL_TEXTURE2 - GL_TEXTURE0);
-	//texture_.bind(GL_TEXTURE0);
-	//normal_.bind(GL_TEXTURE2);
 	glDrawElements(GL_TRIANGLES, numTris_*3, GL_UNSIGNED_INT, 0);
-	//normal_.release(GL_TEXTURE2);
-	//texture_.release(GL_TEXTURE0);
 	vao_.release();
 	shader_.release();
 }

@@ -3,8 +3,9 @@
 
 //////////////////////////////////////////////////////////////////////
 // Publics
-BasicWidget::BasicWidget(QWidget* parent, std::string objFilename) : QOpenGLWidget(parent), logger_(this)
+BasicWidget::BasicWidget(QWidget* parent, std::string objFilename, int particlesRate) : QOpenGLWidget(parent), logger_(this)
 {
+  particlesRate_=particlesRate;
   objFilename_ = objFilename;
   setFocusPolicy(Qt::StrongFocus);
   camera_.setPosition(QVector3D(0.5, 0.5, -2.0));
@@ -112,7 +113,7 @@ void BasicWidget::initializeGL()
   ren1->setRotationAxis(QVector3D(0,1,0));
 
   renderables_.push_back(ren1);
-  emitters_.push_back(new FountainEmitter(&camera_, QVector3D(0,0,0), QVector3D(0,1,0), 10, ren1));
+  emitters_.push_back(new FountainEmitter(&camera_, QVector3D(0,0,0), QVector3D(0,1,0), particlesRate_, ren1));
 
   glViewport(0, 0, width(), height());
   frameTimer_.start();

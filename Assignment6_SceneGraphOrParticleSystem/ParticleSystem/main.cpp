@@ -9,6 +9,7 @@
 #include "App.h"
 #include <iostream>
 #include <cstdlib>
+#include <assert.h>
 
 static bool enableGLDebug = true;
 
@@ -34,9 +35,10 @@ int main(int argc, char** argv) {
   }
   QSurfaceFormat::setDefaultFormat(fmt);
  
- // std::cout << atoi(argv[2]);
-  std::string objFilename(argv[1]);//, atoi(argv[2]));
-  App app(0, objFilename);
+  int particleRate = atoi(argv[2]);
+  assert(particleRate >= 1 && "particle rate must be an integer greater or equal to 1.");
+  std::string objFilename(argv[1]);
+  App app(0, objFilename, particleRate);
   app.show();
   return QApplication::exec();
 }
