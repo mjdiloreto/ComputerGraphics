@@ -149,7 +149,7 @@ void Renderable::update(const qint64 msSinceLastFrame)
     shader_.setUniformValue("pointLights[0].color", 1.0f, 1.0f, 1.0f);
     shader_.setUniformValue("pointLights[0].position", newPos);
 
-    shader_.setUniformValue("pointLights[0].ambientIntensity", 0.5f);
+    shader_.setUniformValue("pointLights[0].ambientIntensity", 0.7f);
     shader_.setUniformValue("pointLights[0].specularStrength", 0.5f);
     shader_.setUniformValue("pointLights[0].constant", 1.0f);
     shader_.setUniformValue("pointLights[0].linear", 0.09f);

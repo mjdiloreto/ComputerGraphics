@@ -16,22 +16,24 @@ void Particle::reset(const QVector3D& position, const QVector3D& velocity, float
 	particleTransform_.setToIdentity();
     particleTransform_.translate(position);
 
-//	particleTransform_ = QMatrix4x4(
-//		1,0,0,position.x(),
-//		0,1,0,position.y(),
-//		0,0,1,position.z(),
-//		0,0,0,1);
 	msLeftToLive_ = lifespan;
 }
 
 void Particle::updateAndDraw(unsigned int msSinceLastFrame) {
-	//velocity_ *= -(9.8 * 9.8);
-	// TODO apply gravity and velocity
+	float elapsed = (float) msSinceLastFrame / 1000.0;
+	float changeInVelocity = -9.8*elapsed;
+
+	velocity_[1] += changeInVelocity;
+
+//	qDebug() << "velocity";
+//	qDebug() << velocity_;
+//	qDebug() << "change in velocity";
+//	qDebug() << changeInVelocity;
     QMatrix4x4 movement;
     movement.setToIdentity();
-    QVector3D trans(0, -0.0001*msLeftToLive_, 0);
-    movement.translate(trans);
-	modelToRender_->setModelMatrix(particleTransform_*movement);
+    movement.translate(velocity_/100);
+    particleTransform_ *= movement;
+	modelToRender_->setModelMatrix(particleTransform_);
     modelToRender_->draw(camera_->getViewMatrix(), camera_->getProjectionMatrix());
 
     msLeftToLive_ -= msSinceLastFrame;

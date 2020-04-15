@@ -112,7 +112,7 @@ void BasicWidget::initializeGL()
   ren1->setRotationAxis(QVector3D(0,1,0));
 
   renderables_.push_back(ren1);
-  emitters_.push_back(new FountainEmitter(&camera_, QVector3D(0,0,0), QVector3D(0,1,0), 1, ren1));
+  emitters_.push_back(new FountainEmitter(&camera_, QVector3D(0,0,0), QVector3D(0,1,0), 10, ren1));
 
   glViewport(0, 0, width(), height());
   frameTimer_.start();
@@ -147,14 +147,8 @@ void BasicWidget::paintGL()
   glClearColor(0.f, 0.f, 0.f, 1.f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
- qDebug() << "before emitters_";
- for (auto emitter: emitters_) {
-      qDebug() << "one emitter";
-     emitter->update(msSinceRestart);
- }
- // for (auto renderable : renderables_) {
- //     renderable->update(msSinceRestart);
- //     renderable->draw(camera_.getViewMatrix(), camera_.getProjectionMatrix());
- // }
+  for (auto emitter: emitters_)
+      emitter->update(msSinceRestart);
+  
   update();
 }

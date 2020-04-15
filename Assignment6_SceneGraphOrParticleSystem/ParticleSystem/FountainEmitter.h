@@ -3,10 +3,12 @@
 #include "Renderable.h"
 #include "Particle.h"
 #include "Camera.h"
+#include <random>
 
 // How long should particles last (ms)?
-#define TIME_TO_LIVE 10000
-#define SPREAD 50
+#define TIME_TO_LIVE 3000
+#define SPREAD 7
+#define FORCE 7
 
 // This Emitter emits particles in a relatively upward direction, and
 // particles are then affected by gravity until they die
@@ -21,6 +23,15 @@ protected:
 
   long lastEmittedAt = 0;
   long timeLivedSoFar = 0;
+  
+  std::random_device rd{};
+  std::mt19937 gen{rd()};
+  std::normal_distribution<> d{0, 0.12};
+  float iota() {return d(gen);}
+  QVector3D makeParticleVelocity() {
+	// go up little boy.
+	return QVector3D(iota()*SPREAD,FORCE+iota()*SPREAD,iota()*SPREAD);
+  }
   
 public:
   FountainEmitter(Camera* camera, const QVector3D& position, const QVector3D& orientation, unsigned int pps, Renderable* particleModel);
