@@ -9,7 +9,7 @@ protected:
   Camera* camera_;
   QMatrix4x4 particleTransform_;
   QVector3D velocity_;
-  float secondsLeftToLive_;
+  float msLeftToLive_;
 
 public:
   Particle(Renderable* model, Camera* camera_, const QVector3D& position, const QVector3D& velocity, float lifespan);
@@ -19,5 +19,5 @@ public:
   void reset(const QVector3D& position, const QVector3D& velocity, float lifespan);
 
   void updateAndDraw(unsigned int msSinceLastFrame);
-  bool isDead() const {return secondsLeftToLive_ > 0.0;}
+  bool isDead() const {return msLeftToLive_ < 0.0;}
 };

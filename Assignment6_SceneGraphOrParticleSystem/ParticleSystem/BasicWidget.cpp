@@ -147,8 +147,14 @@ void BasicWidget::paintGL()
   glClearColor(0.f, 0.f, 0.f, 1.f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  for (auto emitter: emitters_) {
-      emitter->update(msSinceRestart);
-  }
+ qDebug() << "before emitters_";
+ for (auto emitter: emitters_) {
+      qDebug() << "one emitter";
+     emitter->update(msSinceRestart);
+ }
+ // for (auto renderable : renderables_) {
+ //     renderable->update(msSinceRestart);
+ //     renderable->draw(camera_.getViewMatrix(), camera_.getProjectionMatrix());
+ // }
   update();
 }

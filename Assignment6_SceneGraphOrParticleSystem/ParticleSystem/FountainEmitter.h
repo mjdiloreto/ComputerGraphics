@@ -5,7 +5,7 @@
 #include "Camera.h"
 
 // How long should particles last (ms)?
-#define TIME_TO_LIVE 2000
+#define TIME_TO_LIVE 10000
 #define SPREAD 50
 
 // This Emitter emits particles in a relatively upward direction, and
@@ -18,6 +18,9 @@ protected:
   QVector3D orientation_;
   unsigned int particlesPerSecond_;
   Renderable* particleModel_;
+
+  long lastEmittedAt = 0;
+  long timeLivedSoFar = 0;
   
 public:
   FountainEmitter(Camera* camera, const QVector3D& position, const QVector3D& orientation, unsigned int pps, Renderable* particleModel);

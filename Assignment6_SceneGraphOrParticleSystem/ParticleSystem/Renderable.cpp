@@ -160,6 +160,7 @@ void Renderable::update(const qint64 msSinceLastFrame)
 
 void Renderable::draw(const QMatrix4x4& view, const QMatrix4x4& projection)
 {
+
 	// Create our model matrix.
 	QMatrix4x4 rotMatrix;
 	rotMatrix.setToIdentity();
@@ -180,6 +181,11 @@ void Renderable::draw(const QMatrix4x4& view, const QMatrix4x4& projection)
 	shader_.setUniformValue("modelMatrix", modelMat);
 	shader_.setUniformValue("viewMatrix", view);
 	shader_.setUniformValue("projectionMatrix", projection);
+	
+//	qDebug() << "In renderable";
+//	qDebug() << modelMat;
+//	qDebug() << view;
+//	qDebug() << projection;
 
 	vao_.bind();
 	// https://stackoverflow.com/questions/25071248/multi-texturing-using-qopengltexture-and-qopenglframebufferobject

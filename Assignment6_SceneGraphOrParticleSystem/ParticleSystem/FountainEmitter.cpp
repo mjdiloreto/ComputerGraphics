@@ -15,21 +15,31 @@ FountainEmitter::FountainEmitter(Camera* camera, const QVector3D& position, cons
 }
 
 void FountainEmitter::update(unsigned int msSinceLastFrame) {
+	qDebug() << "msSinceLastFrame " << msSinceLastFrame;
+	particleModel_->update(msSinceLastFrame);
 	// remove dead particles
 	int removedParticles = 0;
     for(auto p: particles_) {
     	if (p->isDead()) {
+	        qDebug() << "DEAD PARTICLE ";
     		p->reset(position_, makeParticleVelocity(), TIME_TO_LIVE);
     		removedParticles++;
 		}
     }
 	
-	// add new particles
-	int particlesToAdd = (msSinceLastFrame / 1000) - removedParticles;
-	for(int i = 0; i < particlesToAdd; i++) {
+	// add new particle
+	timeLivedSoFar += msSinceLastFrame;
+	int particlesRate = 1000.0 / particlesPerSecond_;
+	int particlesToAdd = (timeLivedSoFar - lastEmittedAt) / particlesRate;
+	for(int i = 0; i < particlesToAdd - removedParticles; i++) {
+		if (i == 0) lastEmittedAt = timeLivedSoFar;
 		Particle* newP = new Particle(particleModel_, camera_, position_, makeParticleVelocity(), TIME_TO_LIVE);
 		this->particles_.append(newP);
 	}
+
+	qDebug() << "removedParticles " << removedParticles;
+	qDebug() << "particlesToAdd " << particlesToAdd;
+	qDebug() << "particles_.size() " << particles_.size();
 
 	// update all particles
     for (auto p: particles_) {
